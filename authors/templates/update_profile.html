@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container my-5">
+  <!-- Page Title -->
+  <div class="text-center mb-5">
+    <h1 class="display-5 fw-bold">Your Profile</h1>
+    <p class="text-muted">Update your personal details and contact information below.</p>
+  </div>
+
+  <!-- Profile Form Card -->
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card shadow-lg rounded-4 border-0 overflow-hidden">
+        <div class="row g-0">
+          <!-- Left Column: Form -->
+          <div class="col-md-6 p-5">
+            <h2 class="card-title text-center fw-semibold mb-4">Update Contact Information</h2>
+            <p class="text-center text-muted mb-4">Please fill out the form below to keep your profile up to date.</p>
+            <form method="post" class="needs-validation" novalidate>
+              {% csrf_token %}
+              {% crispy form %}
+              <button type="submit" class="btn btn-dark w-100 py-2 mt-3 rounded-3 shadow-sm hover-effect">
+                Save Changes
+              </button>
+            </form>
+          </div>
+
+          <!-- Right Column: Image & Text -->
+          <div class="col-md-6 d-flex flex-column justify-content-center align-items-center bg-light p-4">
+            <div class="mb-4">
+              {% if user.is_authenticated and user.profile.profile_image %}
+                <img src="{{ user.profile.profile_image.url }}"
+                    alt="Profile Picture"
+                    class="img-fluid rounded-3 shadow"
+                    style="width: 100%; max-width: 250px; height: auto; object-fit: cover;">
+              {% else %}
+                <img src="{% static 'images/default_avatar.png' %}"
+                    alt="Default Avatar"
+                    class="img-fluid rounded-3 shadow"
+                    style="width: 100%; max-width: 250px; height: auto; object-fit: cover;">
+              {% endif %}
+            </div>
+            <h5 class="fw-semibold text-center">Keep your profile updated</h5>
+            <p class="text-muted text-center small">Make sure your contact information is always current to stay connected and receive important updates.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Optional Custom Styles -->
+<style>
+  .hover-effect:hover {
+    background-color: #212529 !important;
+    transform: translateY(-2px);
+    transition: all 0.2s ease-in-out;
+  }
+  .card {
+    background-color: #fff;
+  }
+  @media (max-width: 767px) {
+    .card .col-md-6 {
+      max-width: 100%;
+    }
+  }
+</style>
+{% endblock %}
+

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container my-5">
+  <!-- Page Title -->
+  <div class="text-center mb-5">
+    <h1 class="display-5 fw-bold">Add New Post</h1>
+    <p class="text-muted">Share your thoughts and publish a new post to your blog.</p>
+  </div>
+
+  <!-- Add Post Card -->
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card shadow-lg rounded-4 border-0 overflow-hidden">
+        <div class="row g-0">
+          
+          <!-- Left Column: Post Form -->
+          <div class="col-md-6 p-5">
+            <h2 class="card-title text-center fw-semibold mb-4">Create Your Post</h2>
+            <p class="text-center text-muted mb-4">Fill out the details below, add an image, and publish your post.</p>
+            <form method="post" class="needs-validation" novalidate enctype="multipart/form-data">
+              {% csrf_token %}
+              {% crispy form %}
+              <button type="submit" class="btn btn-dark w-100 py-2 mt-3 rounded-3 shadow-sm hover-effect">
+                Publish Post
+              </button>
+            </form>
+          </div>
+
+          <!-- Right Column: Illustration & Text -->
+          <div class="col-md-6 d-flex flex-column justify-content-center align-items-center bg-light p-4">
+            <div class="mb-4">
+              <img src="{% static 'images/add-post.png' %}" 
+                   alt="Add Post Illustration" 
+                   class="img-fluid rounded-3 shadow" 
+                   style="width: 100%; max-width: 250px; height: auto; object-fit: cover;">
+            </div>
+            <h5 class="fw-semibold text-center">Share Your Story</h5>
+            <p class="text-muted text-center small">Add a title, description, and an optional image. Engage your readers with your new post!</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Optional Custom Styles -->
+<style>
+  .hover-effect:hover {
+    background-color: #212529 !important;
+    transform: translateY(-2px);
+    transition: all 0.2s ease-in-out;
+  }
+  .card {
+    background-color: #fff;
+  }
+  @media (max-width: 767px) {
+    .card .col-md-6 {
+      max-width: 100%;
+    }
+  }
+</style>
+{% endblock %}
+
+
+
+
+

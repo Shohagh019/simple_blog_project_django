@@ -1,0 +1,250 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Power & People</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+      /* Full-height flex layout */
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background-color: #f8f9fa;
+        font-family: "Inter", sans-serif;
+      }
+
+      main {
+        flex-grow: 1;
+      }
+
+      /* Navbar */
+      .navbar {
+        background-color: #ddefff !important;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      }
+      .navbar-brand {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.35rem;
+        font-weight: 600;
+        color: #000001 !important;
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        transition: color 0.3s ease, transform 0.2s ease-in-out;
+      }
+      .navbar-brand:hover {
+        color: #07ffde !important;
+        transform: scale(1.05);
+      }
+      .brand-icon {
+        font-size: 1.5rem;
+        color: #07ffee;
+      }
+
+      /* Buttons */
+      .btn-light-custom {
+        background-color: #f1f3f5;
+        border: 1px solid #dee2e6;
+        color: #495057;
+        transition: all 0.2s ease-in-out;
+      }
+      .btn-light-custom:hover {
+        background-color: #48f8d8;
+        color: #212529;
+      }
+
+      .btn-primary-custom {
+        background-color: #f1f3f5;
+        border: 1px solid #dee2e6;
+        color: #fff;
+        transition: all 0.2s ease-in-out;
+      }
+      .btn-primary-custom:hover {
+        background-color: #48f8d8;
+        color: #212529;
+      }
+
+      /* Toast */
+      .toast {
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      }
+
+      /* Footer */
+      footer {
+        flex-shrink: 0;
+        background-color: #000;
+        color: #fff;
+      }
+      footer a:hover {
+        color: #07ffde;
+        text-decoration: underline;
+        transition: color 0.3s ease;
+      }
+      footer i:hover {
+        color: #07ffde;
+        transition: color 0.3s ease;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark py-3">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">
+          <span class="brand-icon">🌐</span> Power & People
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-3">
+            {% if request.user.is_authenticated %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown"
+                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {% if user.is_authenticated and user.profile.profile_image %}
+                    <img src="{{ user.profile.profile_image.url }}"
+                         alt="Profile Picture"
+                         class="rounded-circle border"
+                         width="50" height="50"
+                         style="object-fit: cover;">
+                  {% else %}
+                    <img src="{% static 'images/default_avatar.png' %}"
+                         alt="Default Avatar"
+                         class="rounded-circle border"
+                         width="50" height="50"
+                         style="object-fit: cover;">
+                  {% endif %}
+                </a>
+                <ul class="dropdown-menu shadow" aria-labelledby="navbarDropdown">
+                  <!-- <li><a class="dropdown-item" href="{% url 'register' %}">Add Author</a></li> -->
+                  <!-- <li><a class="dropdown-item" href="{% url 'add_category' %}">Add Category</a></li> -->
+                  <li><a class="dropdown-item" href="{% url 'add_post' %}">Add Post</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{% url 'update_profile' %}">Update Profile</a></li>
+                  <li><a class="dropdown-item" href="{% url 'change_pass' %}">Change Password</a></li>
+                  <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+              </li>
+            {% endif %}
+          </ul>
+
+          <div class="d-flex align-items-center gap-3">
+            <form class="d-flex" role="search">
+              <input class="form-control rounded-pill me-2 shadow-sm border-0"
+                     type="search" placeholder="Search..." aria-label="Search">
+              <button class="btn btn-light-custom rounded-pill px-3" type="submit">Search</button>
+            </form>
+
+            {% if request.user.is_authenticated %}
+              <div class="d-flex gap-2">
+                <a href="{% url 'profile' %}" class="btn btn-light-custom btn-sm rounded-pill px-4">Profile</a>
+                <a href="{% url 'logout' %}" class="btn btn-light-custom btn-sm rounded-pill px-4">Logout</a>
+              </div>
+            {% else %}
+              <a href="{% url 'login' %}" class="btn btn-light-custom rounded-pill px-4">Login</a>
+              <a href="{% url 'register' %}" class="btn btn-light-custom rounded-pill px-4">Register</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Toast messages -->
+    <div aria-live="polite" aria-atomic="true" class="position-relative">
+      <div class="toast-container position-fixed top-1 start-2 p-3 mt-3" style="z-index: 1055;">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="toast align-items-center text-white bg-{{ message.tags|default:'primary' }} border-0"
+                 role="alert" data-bs-autohide="true" data-bs-delay="3000">
+              <div class="d-flex">
+                <div class="toast-body">{{ message }}</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <main>
+      {% block content %}
+      {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white pt-5 pb-4 shadow-sm">
+      <div class="container">
+        <div class="row g-4">
+
+          <!-- Brand & About -->
+          <div class="col-md-3">
+            <h5 class="fw-bold mb-3">Power & People</h5>
+            <p class="small text-muted">Empowering communities through information and collaboration. Stay connected with us for the latest updates and insights.</p>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="col-md-3">
+            <h6 class="fw-bold mb-3">Quick Links</h6>
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-white text-decoration-none">Home</a></li>
+              <li><a href="#" class="text-white text-decoration-none">About Us</a></li>
+              <li><a href="#" class="text-white text-decoration-none">Contact</a></li>
+              <li><a href="#" class="text-white text-decoration-none">Blog</a></li>
+            </ul>
+          </div>
+
+          <!-- Contact / Hotline -->
+          <div class="col-md-3">
+            <h6 class="fw-bold mb-3">Contact Us</h6>
+            <p class="small mb-1"><strong>Email:</strong> info@powerandpeople.com</p>
+            <p class="small mb-1"><strong>Hotline:</strong> +880 1234 567890</p>
+            <p class="small mb-0"><strong>Address:</strong> 123 Main Street, Dhaka, Bangladesh</p>
+          </div>
+
+          <!-- Social Media -->
+          <div class="col-md-3">
+            <h6 class="fw-bold mb-3">Follow Us</h6>
+            <div class="d-flex gap-3">
+              <a href="#" class="text-white fs-5"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="text-white fs-5"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="text-white fs-5"><i class="bi bi-linkedin"></i></a>
+              <a href="#" class="text-white fs-5"><i class="bi bi-instagram"></i></a>
+            </div>
+          </div>
+
+        </div>
+
+        <hr class="mt-4 border-light">
+
+        <div class="row">
+          <div class="col text-center">
+            <p class="small mb-0">&copy; {{ now.year }} Power & People. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+        toastElList.map(function (toastEl) {
+          return new bootstrap.Toast(toastEl).show()
+        })
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  </body>
+</html>
+

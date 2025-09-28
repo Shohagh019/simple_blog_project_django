@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+<!-- Welcome Section -->
+<section class="text-center py-5 bg-gradient text-black" style="background: linear-gradient(to right, #00c6ff, #0072ff);">
+  <h1 class="display-4 font-weight-bold">Welcome to Power & People!</h1>
+  <p class="lead">We're excited to have you here. Join our community by registering today!</p>
+</section>
+
+<!-- Centering Form Section -->
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+  <!-- Form container -->
+  <div class="card shadow-lg p-5 w-100" style="max-width: 500px;">
+    <h2 class="text-center mb-4">Create Your Account</h2>
+    
+    <p class="text-center text-muted mb-4">
+      Fill out the form below to create your account. It’s quick, easy, and secure.
+    </p>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      <div class="mb-3">
+        {{ form|crispy }}
+      </div>
+
+      <div class="d-flex justify-content-between">
+        <p class="text-muted">Already have an account?</p>
+        <a href="{% url 'login' %}" class="text-primary">Login here</a>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 mt-4 py-2">
+        Register
+      </button>
+    </form>
+
+    <p class="text-center text-muted mt-4">
+      By registering, you agree to our <a href="#" class="text-primary">Terms & Conditions</a> and <a href="#" class="text-primary">Privacy Policy</a>.
+    </p>
+  </div>
+</div>
+
+{% endblock %}
+
+
+
