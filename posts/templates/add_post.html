@@ -1,69 +1,79 @@
 {% extends 'base.html' %}
-{% load static %}
-{% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container my-5">
+<div class="container my-10">
   <!-- Page Title -->
-  <div class="text-center mb-5">
-    <h1 class="display-5 fw-bold">Add New Post</h1>
-    <p class="text-muted">Share your thoughts and publish a new post to your blog.</p>
+  <div class="text-center mb-8">
+    <h1 class="display-5 fw-bold">Create a New Post</h1>
+    <p class="text-muted lead">Share your ideas, thoughts, or experiences with your audience. Fill out the form below to get started.</p>
   </div>
-
-  <!-- Add Post Card -->
+    {% load crispy_forms_tags %}
+  <!-- Form Card -->
   <div class="row justify-content-center">
-    <div class="col-md-10">
-      <div class="card shadow-lg rounded-4 border-0 overflow-hidden">
+    <div class="col-md-8">
+      <div class="card shadow-lg border-0  overflow-hidden">
         <div class="row g-0">
           
-          <!-- Left Column: Post Form -->
-          <div class="col-md-6 p-5">
-            <h2 class="card-title text-center fw-semibold mb-4">Create Your Post</h2>
-            <p class="text-center text-muted mb-4">Fill out the details below, add an image, and publish your post.</p>
-            <form method="post" class="needs-validation" novalidate enctype="multipart/form-data">
+          <!-- Form Column -->
+          <div class="col-md-12 p-5">
+            <h2 class="card-title text-center fw-semibold mb-4">Add Your Post</h2>
+            <p class="text-center text-muted mb-4 small">
+              Enter the post title, content, select categories, and optionally upload an image. Your readers are waiting!
+            </p>
+
+            <form method="post" class="space-y-4" enctype="multipart/form-data">
               {% csrf_token %}
-              {% crispy form %}
-              <button type="submit" class="btn btn-dark w-100 py-2 mt-3 rounded-3 shadow-sm hover-effect">
+              {{ form|crispy }}
+
+              <button type="submit" class="w-full py-2 px-4 bg-dark text-white rounded-2xl shadow hover:bg-black transition duration-200">
                 Publish Post
               </button>
             </form>
-          </div>
-
-          <!-- Right Column: Illustration & Text -->
-          <div class="col-md-6 d-flex flex-column justify-content-center align-items-center bg-light p-4">
-            <div class="mb-4">
-              <img src="{% static 'images/add-post.png' %}" 
-                   alt="Add Post Illustration" 
-                   class="img-fluid rounded-3 shadow" 
-                   style="width: 100%; max-width: 250px; height: auto; object-fit: cover;">
-            </div>
-            <h5 class="fw-semibold text-center">Share Your Story</h5>
-            <p class="text-muted text-center small">Add a title, description, and an optional image. Engage your readers with your new post!</p>
           </div>
 
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Optional Info Section -->
+  <div class="text-center mt-5 text-muted small">
+    <p>
+      Tip: Choose relevant categories and a catchy title to engage more readers. You can always edit your post later.
+    </p>
+  </div>
 </div>
 
-<!-- Optional Custom Styles -->
+<!-- Custom Styles -->
 <style>
-  .hover-effect:hover {
-    background-color: #212529 !important;
-    transform: translateY(-2px);
-    transition: all 0.2s ease-in-out;
+  body {
+    background-color: #f8f9fa; /* Light gray background */
   }
   .card {
-    background-color: #fff;
+    background-color: #ffffff;
+    border-radius: 1rem;
+  }
+  .card-title {
+    color: #212529;
+  }
+  .bg-dark {
+    background-color: #343a40 !important;
+  }
+  .bg-dark:hover {
+    background-color: #212529 !important;
+  }
+  .form-control:focus {
+    border-color: #343a40;
+    box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.25);
   }
   @media (max-width: 767px) {
-    .card .col-md-6 {
-      max-width: 100%;
+    .card {
+      margin: 0 1rem;
     }
   }
 </style>
 {% endblock %}
+
 
 
 

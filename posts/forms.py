@@ -6,3 +6,8 @@ class PostForm(forms.ModelForm):
         model = models.Post
         # fields = '__all__'
         exclude = ['author']
+        
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = models.Comment
+        fields = ['name', 'email', 'body'] 

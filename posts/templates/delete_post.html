@@ -1,19 +1,80 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-<h1>Are You Sure to Delete this Post?</h1>
-{% load crispy_forms_tags %}
+<style>
+  /* Card container */
+  .delete-card {
+    max-width: 500px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    text-align: center;
+  }
 
-{% load crispy_forms_tags %}
+  /* Warning heading */
+  .delete-card h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #dc3545;
+    margin-bottom: 1rem;
+  }
 
-<div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-2xl shadow-sm" style="width: 50%; margin: 0 auto;">
-  <h2 class="text-xl font-semibold mb-4 text-gray-700">Contact Form</h2>
-  <form method="post" class="space-y-4">
+  .delete-card p {
+    color: #6c757d;
+    margin-bottom: 2rem;
+  }
+
+  /* Buttons */
+  .btn-delete {
+    background-color: #dc3545;
+    color: #fff;
+    border: 1px solid #dc3545;
+    border-radius: 0.5rem;
+    padding: 0.6rem 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+  }
+  .btn-delete:hover {
+    background-color: #b02a37;
+    border-color: #b02a37;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+  }
+
+  .btn-cancel {
+    background-color: #09ed55;
+    border: 1px solid #07e5f1;
+    color: #000509;
+    border-radius: 0.5rem;
+    padding: 0.6rem 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    text-decoration: none;
+  }
+  .btn-cancel:hover {
+    background-color: #6c757d;
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+  }
+
+</style>
+
+<div class="delete-card">
+  <h1>⚠️ Confirm Deletion</h1>
+  <p>Are you sure you want to delete this post? This action cannot be undone.</p>
+
+  <form method="post">
     {% csrf_token %}
     {{ form|crispy }}
-    <button type="submit" class="w-full py-2 px-4 bg-black text-white rounded-xl hover:bg-gray-800 transition">
-      Delete
-    </button>
+
+    <button type="submit" class="btn-delete mt-3 mb-4">Delete Post</button>
+    <a href="{% url 'profile' %}" class="btn-cancel">Cancel</a>
   </form>
 </div>
 

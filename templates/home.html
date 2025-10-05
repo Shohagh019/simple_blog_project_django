@@ -1,78 +1,129 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+
+<style>
+  /* Button Styles */
+  .btn {
+    transition: all 0.3s ease-in-out;
+    border-width: 1px;
+    border-radius: 0 !important; /* rectangular buttons */
+  }
+
+  .btn-primary {
+    background-color: #20c997;
+    border-color: #17a589;
+    color: #fff;
+  }
+  .btn-primary:hover {
+    background-color: #198754;
+    border-color: #198754;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  }
+
+  .btn-outline-primary {
+    background-color: transparent;
+    border-color: #20c997;
+    color: #20c997;
+  }
+  .btn-outline-primary:hover {
+    background-color: #20c997;
+    border-color: #20c997;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  }
+
+  .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+  }
+  .btn-secondary:hover {
+    background-color: #565e64;
+    border-color: #565e64;
+  }
+
+  /* Carousel caption overlay */
+  .carousel-caption {
+    background-color: rgba(0,0,0,0.5);
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+  }
+
+  /* Card hover effect */
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* Badge styles */
+  .badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  /* Offcanvas header gradient */
+  .offcanvas-header {
+    background: linear-gradient(135deg, #20c997, #198754);
+    color: #fff;
+  }
+
+  /* Sidebar image hover */
+  .filter-sidebar-img:hover {
+    transform: scale(1.03);
+    transition: transform 0.3s ease-in-out;
+  }
+</style>
+
 <div class="container my-5">
+
+  <!-- Hero Section -->
+  <div class="text-center mb-4">
+    <h1 class="display-5 fw-bold">Explore Our Blog</h1>
+    <p class="text-muted fs-5">Read insightful posts, discover new ideas, and join the conversation.</p>
+  </div>
+
+  <!-- Filter Button Centered -->
+  <div class="d-flex justify-content-center mb-5">
+    <button class="btn btn-outline-primary px-4 py-2" 
+            type="button" 
+            data-bs-toggle="offcanvas" 
+            data-bs-target="#filterSidebar" 
+            aria-controls="filterSidebar">
+      <i class="bi bi-funnel-fill"></i> Filters
+    </button>
+  </div>
+
   <div class="row g-4">
-    <!-- Category Filter Section -->
-    <div class="col-lg-3">
-      <div class="card shadow-sm border-0 rounded-4 h-100">
-        <!-- Filter Image -->
-        <div class="card-img-top" style="height: 180px; overflow: hidden;">
-          <img src="{% static 'images/filter.png' %}" 
-               alt="Filter by Category" 
-               class="w-100 h-100" 
-               style="object-fit: cover;">
-        </div>
-
-        <!-- Filter Form -->
-        <div class="card-body p-4">
-          <form method="GET" action="{% url 'home' %}">
-            {% csrf_token %}
-            <div class="mb-3">
-              <label for="category" class="form-label fw-semibold text-secondary">Select Category</label>
-              <select name="category" id="category" class="form-select rounded-3 shadow-sm">
-                <option value="">All Categories</option>
-                {% for category in categories %}
-                <option value="{{ category.id }}"
-                  {% if category.id|stringformat:"s" == request.GET.category %} selected {% endif %}>
-                  {{ category.name }}
-                </option>
-                {% endfor %}
-              </select>
-            </div>
-            <button type="submit" class="btn btn-primary w-100 rounded-pill shadow-sm">
-              Filter
-            </button>
-          </form>
-        </div>
-
-        <!-- Info Text -->
-        <div class="card-footer bg-light border-0 text-center py-3 rounded-bottom">
-          <p class="text-muted small mb-0">
-            {% if request.GET.category %}
-              Showing {{ data|length }} post{% if data|length != 1 %}s{% endif %} in this category.
-            {% else %}
-              Showing all posts.
-            {% endif %}
-          </p>
-        </div>
-      </div>
-    </div>
 
     <!-- Carousel Section -->
-    <div class="col-lg-9">
+    <div class="col-lg-12 mx-auto">
       <div id="postCarousel" class="carousel slide shadow-sm rounded-4 overflow-hidden" data-bs-ride="carousel">
         <div class="carousel-inner">
           {% for post in data %}
           <div class="carousel-item {% if forloop.first %}active{% endif %}">
-            <div class="card border-0 h-100">
+            <div class="position-relative">
               <img src="{{ post.image.url }}" 
-                   class="card-img-top" 
-                   alt="Post Image" 
-                   style="object-fit: cover; height: 350px;">
-              <div class="card-body text-center p-4">
-                <h4 class="fw-bold mb-2">{{ post.title }}</h4>
-                <p class="text-muted small mb-2">
+                   class="d-block w-100" 
+                   alt="{{ post.title }}" 
+                   style="object-fit: cover; height: 380px;">
+              <div class="carousel-caption d-none d-md-block">
+                <h4 class="fw-bold text-white">{{ post.title }}</h4>
+                <p class="text-light small mb-1">
                   by <span class="fw-semibold">{{ post.author.first_name }} {{ post.author.last_name }}</span>
                 </p>
-                <p class="text-muted small">{{ post.content|truncatewords:30 }}</p>
+                <p class="text-light small">{{ post.content|truncatewords:20 }}</p>
+                <a href="{% url 'post_details' post.id %}" class="btn btn-primary btn-sm">Read More</a>
               </div>
             </div>
           </div>
           {% endfor %}
         </div>
 
-        <!-- Controls -->
+        <!-- Carousel Controls -->
         <button class="carousel-control-prev" type="button" data-bs-target="#postCarousel" data-bs-slide="prev">
           <span class="carousel-control-prev-icon bg-dark rounded-circle p-2"></span>
         </button>
@@ -81,30 +132,75 @@
         </button>
       </div>
     </div>
+
+    <!-- Offcanvas Sidebar Filter -->
+    <div class="offcanvas offcanvas-start shadow" tabindex="-1" id="filterSidebar" aria-labelledby="filterSidebarLabel" style="width: 300px;">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title d-flex align-items-center gap-2" id="filterSidebarLabel">
+          <i class="bi bi-funnel-fill"></i> Filter by Category
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <form method="GET" action="{% url 'home' %}">
+          <div class="mb-3">
+            <label for="category" class="form-label fw-semibold text-dark">Choose Category</label>
+            <select name="category" id="category" 
+                    class="form-select border-0 shadow-sm px-3 py-2"
+                    style="border-radius: 0; background: #f8f9fa;">
+              <option value="">All Categories</option>
+              {% for category in categories %}
+              <option value="{{ category.id }}"
+                {% if category.id|stringformat:"s" == request.GET.category %} selected {% endif %}>
+                {{ category.name }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary w-100 shadow-sm mb-3">Apply Filter</button>
+        </form>
+
+        <!-- Sidebar Image -->
+        <div class="text-center">
+          <img src="{% static 'images/filter-sidebar.png' %}" class="h-100 w-100" 
+               alt="Filter Illustration" 
+               class="img-fluid rounded-3 shadow-sm filter-sidebar-img">
+        </div>
+      </div>
+      <div class="offcanvas-footer text-center border-top py-2 small text-muted">
+        {% if request.GET.category %}
+          Showing <span class="fw-semibold">{{ data|length }}</span> post{% if data|length != 1 %}s{% endif %}.
+        {% else %}
+          Showing all posts.
+        {% endif %}
+      </div>
+    </div>
+
   </div>
 
-  <!-- All Posts Section -->
-  <div class="row g-4 mt-4">
+  <!-- Posts Grid Section -->
+  <div class="row g-4 mt-5">
+    <div class="col-12 text-center mb-4">
+      <h3 class="fw-bold">📌 Latest Posts</h3>
+    </div>
     {% for post in data %}
-    <div class="col-md-6">
+    <div class="col-md-6 col-lg-4">
       <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
         <img src="{{ post.image.url }}" 
              class="card-img-top" 
-             alt="Post Image" 
-             style="object-fit: cover; height: 220px;">
+             alt="{{ post.title }}" 
+             style="object-fit: cover; height: 200px;">
         <div class="card-body d-flex flex-column p-4">
           <h5 class="fw-bold mb-2 text-truncate" title="{{ post.title }}">{{ post.title }}</h5>
           <p class="text-muted small mb-2">
             by <span class="fw-semibold">{{ post.author.first_name }} {{ post.author.last_name }}</span>
           </p>
-          <p class="text-muted small flex-grow-1" style="min-height: 60px; overflow: hidden; text-overflow: ellipsis;">
-            {{ post.content|truncatewords:25 }}
-          </p>
-          <div>
+          <p class="text-muted small flex-grow-1">{{ post.content|truncatewords:25 }}<a href="{% url 'post_details' post.id %}" class="text-decoration-none">Read More</a></p>
+          <div class="mt-2">
             {% for cat in post.category.all %}
-            <span class="badge rounded-pill bg-light text-dark border px-3 py-1 small shadow-sm">{{ cat.name }}</span>
+            <span class="badge bg-light text-dark border px-3 py-1 small shadow-sm">{{ cat.name }}</span>
             {% empty %}
-            <span class="badge rounded-pill bg-secondary px-3 py-1">Uncategorized</span>
+            <span class="badge bg-secondary px-3 py-1">Uncategorized</span>
             {% endfor %}
           </div>
         </div>
@@ -114,8 +210,13 @@
     <p class="col-12 text-center text-muted">No posts found in this category.</p>
     {% endfor %}
   </div>
+
 </div>
+
 {% endblock %}
+
+
+
 
 
 
